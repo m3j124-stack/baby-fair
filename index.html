@@ -8,68 +8,73 @@
 <title>즉석 행운 추첨 — 베이비페어</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#FFFBE6;min-height:100vh;user-select:none;}
-.screen{display:none;padding:1.5rem;min-height:100vh;align-items:center;justify-content:center;flex-direction:column;}
+html,body{width:100%;height:100%;overflow:hidden;}
+body{font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#FFFBE6;height:100vh;}
+.screen{display:none;width:100vw;height:100vh;align-items:center;justify-content:center;flex-direction:column;padding:2rem;}
 .screen.active{display:flex;}
-.card{background:#FFFFFF;border-radius:24px;padding:1.75rem;width:100%;max-width:820px;position:relative;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.4);}
-.btn-admin{position:absolute;top:1rem;left:1rem;padding:7px 14px;font-size:12px;color:#888;background:#f4f4f6;border:1px solid #e0e0e0;border-radius:999px;cursor:pointer;z-index:10;}
-.btn-draw{width:100%;margin-top:1rem;padding:22px;font-size:22px;font-weight:700;color:#fff;background:#FF7AB5;border:none;border-radius:20px;cursor:pointer;box-shadow:0 6px 0 #CC3377;transition:transform .08s,box-shadow .08s;}
-.btn-draw:not(:disabled):active{transform:translateY(4px);box-shadow:0 2px 0 #CC3377;}
-.btn-draw:disabled{background:#ffd6e8;color:#ffaad0;box-shadow:0 6px 0 #ffb3d1;cursor:not-allowed;}
-.btn-main{width:100%;padding:18px;font-size:18px;font-weight:700;color:#fff;background:#FF7AB5;border:none;border-radius:16px;cursor:pointer;box-shadow:0 5px 0 #CC3377;transition:transform .08s,box-shadow .08s;margin-top:1rem;}
-.btn-main:active{transform:translateY(3px);box-shadow:0 2px 0 #CC3377;}
-.btn-sec{width:100%;padding:13px;font-size:14px;font-weight:500;background:#f4f4f6;color:#888;border:1px solid #e0e0e0;border-radius:14px;cursor:pointer;box-shadow:0 4px 0 #d0d0d4;margin-top:.7rem;}
-.btn-danger{color:#A32D2D;border-color:#F09595;box-shadow:0 4px 0 #F09595;}
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1.25rem;}
-.stat{background:#f7f7f9;border-radius:14px;padding:.8rem;text-align:center;}
-.stat-label{font-size:12px;color:#aaa;margin-bottom:4px;}
-.stat-val{font-size:22px;font-weight:700;color:#111;}
-.alert-box{background:#fff8e1;color:#b45309;border-radius:10px;padding:.65rem 1rem;font-size:13px;text-align:center;margin-bottom:.75rem;}
+.card{background:#FFFFFF;border-radius:32px;padding:2.5rem;width:100%;height:100%;max-width:1100px;max-height:96vh;position:relative;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.12);display:flex;flex-direction:column;justify-content:center;}
 
-/* 추첨 한 화면 */
-.draw-layout{display:flex;align-items:center;justify-content:center;gap:2.5rem;margin:.75rem 0;}
+/* 공통 버튼 */
+.btn-admin{position:absolute;top:1.25rem;left:1.25rem;padding:10px 18px;font-size:14px;color:#888;background:#f4f4f6;border:1px solid #e0e0e0;border-radius:999px;cursor:pointer;z-index:10;font-family:inherit;}
+.btn-draw{width:100%;margin-top:1.5rem;padding:28px;font-size:26px;font-weight:700;color:#fff;background:#FF7AB5;border:none;border-radius:24px;cursor:pointer;box-shadow:0 8px 0 #CC3377;transition:transform .08s,box-shadow .08s;font-family:inherit;}
+.btn-draw:not(:disabled):active{transform:translateY(5px);box-shadow:0 3px 0 #CC3377;}
+.btn-draw:disabled{background:#ffd6e8;color:#ffaad0;box-shadow:0 8px 0 #ffb3d1;cursor:not-allowed;}
+.btn-main{width:100%;padding:22px;font-size:20px;font-weight:700;color:#fff;background:#FF7AB5;border:none;border-radius:20px;cursor:pointer;box-shadow:0 6px 0 #CC3377;transition:transform .08s,box-shadow .08s;margin-top:1.25rem;font-family:inherit;}
+.btn-main:active{transform:translateY(4px);box-shadow:0 2px 0 #CC3377;}
+.btn-sec{width:100%;padding:16px;font-size:16px;font-weight:500;background:#f4f4f6;color:#888;border:1px solid #e0e0e0;border-radius:16px;cursor:pointer;box-shadow:0 4px 0 #d0d0d4;margin-top:.75rem;font-family:inherit;}
+.btn-danger{color:#A32D2D;border-color:#F09595;box-shadow:0 4px 0 #F09595;}
+
+/* 메인 화면 */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:2rem;}
+.stat{background:#FFF3D4;border-radius:20px;padding:1.2rem;text-align:center;}
+.stat-label{font-size:14px;color:#aaa;margin-bottom:6px;}
+.stat-val{font-size:32px;font-weight:700;color:#111;}
+.alert-box{background:#fff8e1;color:#b45309;border-radius:12px;padding:.8rem 1rem;font-size:15px;text-align:center;margin-bottom:1rem;}
+
+/* 추첨 화면 */
+.draw-layout{display:flex;align-items:center;justify-content:center;gap:3rem;flex:1;}
 .roulette-wrap{position:relative;flex-shrink:0;}
-.roulette-needle{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:40px;z-index:10;filter:drop-shadow(0 3px 6px rgba(0,0,0,0.5));}
-canvas#roulette-canvas{border-radius:50%;box-shadow:0 8px 36px rgba(0,0,0,0.28);display:block;}
+.roulette-needle{position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:52px;z-index:10;filter:drop-shadow(0 3px 6px rgba(0,0,0,0.4));}
+canvas#roulette-canvas{border-radius:50%;box-shadow:0 10px 40px rgba(0,0,0,0.18);display:block;}
 
 /* 충전 영역 */
-.charge-side{display:flex;flex-direction:column;align-items:center;gap:1rem;width:160px;}
-.gauge-track{width:100%;height:28px;background:#e8e8ec;border-radius:999px;overflow:hidden;box-shadow:inset 0 2px 5px rgba(0,0,0,0.12);}
-.gauge-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#378ADD,#FFD700);transition:none;}
-.gauge-label{font-size:13px;font-weight:700;color:#444;text-align:center;min-height:20px;}
-.btn-charge{width:145px;height:145px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#FFB3D1,#FF5FA0);border:none;cursor:pointer;box-shadow:0 8px 0 #CC3377,0 0 0 7px #FFD6E8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;transition:transform .08s,box-shadow .08s;position:relative;overflow:hidden;touch-action:none;}
-.btn-charge.pressing{transform:scale(.91);box-shadow:0 3px 0 #CC3377,0 0 0 7px #FFD6E8;}
-.btn-charge.full{background:radial-gradient(circle at 35% 35%,#FFE5F2,#FF85C2);box-shadow:0 8px 0 #CC3377,0 0 0 7px #FFD6E8,0 0 28px rgba(255,100,180,.7);}
-.btn-charge .c-emoji{font-size:44px;pointer-events:none;}
-.btn-charge .c-txt{font-size:12px;font-weight:700;color:#fff;pointer-events:none;text-shadow:0 1px 3px rgba(0,0,0,.3);}
+.charge-side{display:flex;flex-direction:column;align-items:center;gap:1.25rem;width:220px;}
+.gauge-track{width:100%;height:36px;background:#e8e8ec;border-radius:999px;overflow:hidden;box-shadow:inset 0 2px 6px rgba(0,0,0,0.12);}
+.gauge-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#FF7AB5,#FFD700);transition:none;}
+.gauge-label{font-size:17px;font-weight:700;color:#444;text-align:center;min-height:26px;}
+.btn-charge{width:200px;height:200px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#FFB3D1,#FF5FA0);border:none;cursor:pointer;box-shadow:0 10px 0 #CC3377,0 0 0 10px #FFD6E8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;transition:transform .08s,box-shadow .08s;position:relative;overflow:hidden;touch-action:none;}
+.btn-charge.pressing{transform:scale(.91);box-shadow:0 4px 0 #CC3377,0 0 0 10px #FFD6E8;}
+.btn-charge.full{background:radial-gradient(circle at 35% 35%,#FFE5F2,#FF85C2);box-shadow:0 10px 0 #CC3377,0 0 0 10px #FFD6E8,0 0 36px rgba(255,100,180,.7);}
+.btn-charge .c-emoji{font-size:60px;pointer-events:none;}
+.btn-charge .c-txt{font-size:15px;font-weight:700;color:#fff;pointer-events:none;text-shadow:0 1px 3px rgba(0,0,0,.3);}
 .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.35);transform:scale(0);animation:ripa .6s linear;pointer-events:none;}
 @keyframes ripa{to{transform:scale(4);opacity:0;}}
-.charge-hint{font-size:12px;color:#999;text-align:center;line-height:1.5;}
-.spin-label{text-align:center;font-size:19px;font-weight:700;color:#333;margin-top:.6rem;min-height:28px;}
+.charge-hint{font-size:14px;color:#bbb;text-align:center;line-height:1.6;}
+.spin-label{text-align:center;font-size:22px;font-weight:700;color:#333;margin-top:.75rem;min-height:32px;}
 
-/* 결과 */
-#confetti-canvas{position:absolute;inset:0;pointer-events:none;z-index:20;border-radius:24px;}
-.result-center{display:flex;flex-direction:column;align-items:center;}
-.result-face-wrap{position:relative;margin:.75rem 0 1.25rem;}
-.result-face{width:240px;height:240px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:120px;border:7px solid rgba(255,255,255,.4);box-shadow:0 10px 40px rgba(0,0,0,.15);position:relative;z-index:2;}
-.spin-deco{position:absolute;inset:-16px;border-radius:50%;border:4px dashed rgba(255,200,0,.65);animation:rot 5s linear infinite;}
+/* 결과 화면 */
+#confetti-canvas{position:absolute;inset:0;pointer-events:none;z-index:20;border-radius:32px;}
+.result-center{display:flex;flex-direction:column;align-items:center;flex:1;justify-content:center;}
+.result-face-wrap{position:relative;margin:.5rem 0 1.5rem;}
+.result-face{width:300px;height:300px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:150px;border:8px solid rgba(255,255,255,.4);box-shadow:0 12px 50px rgba(0,0,0,.12);position:relative;z-index:2;}
+.spin-deco{position:absolute;inset:-18px;border-radius:50%;border:5px dashed rgba(255,100,180,.5);animation:rot 5s linear infinite;}
 @keyframes rot{to{transform:rotate(360deg);}}
-.result-badge{width:100%;text-align:center;padding:1.1rem 2rem;border-radius:18px;}
+.result-badge{width:100%;text-align:center;padding:1.5rem 2rem;border-radius:20px;}
 .result-badge.c0{background:#FAEEDA;}.result-badge.c1{background:#FAEEDA;}
 .result-badge.c2{background:#E6F1FB;}.result-badge.c3{background:#EAF3DE;}
 .result-badge.c4{background:#EEEDFE;}.result-badge.c5{background:#f4f4f6;}
-.prize-grade{font-size:30px;font-weight:700;line-height:1.3;}
+.prize-grade{font-size:36px;font-weight:700;line-height:1.3;}
 .prize-grade.c0{color:#412402;}.prize-grade.c1{color:#633806;}
 .prize-grade.c2{color:#0C447C;}.prize-grade.c3{color:#27500A;}
 .prize-grade.c4{color:#3C3489;}.prize-grade.c5{color:#333;}
 .prize-cname{display:none;}
-.prize-gift{font-size:20px;font-weight:500;margin-top:10px;opacity:.8;letter-spacing:0.5px;}
+.prize-gift{font-size:24px;font-weight:500;margin-top:12px;opacity:.8;letter-spacing:0.5px;}
 
 /* 관리자 */
-.prize-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:14px;}
+.prize-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f0f0f0;font-size:16px;}
 .prize-row:last-child{border-bottom:none;}
-.admin-row{display:flex;align-items:center;gap:12px;margin-bottom:1rem;}
-.admin-label{font-size:14px;color:#888;min-width:100px;}
+.admin-row{display:flex;align-items:center;gap:14px;margin-bottom:1.25rem;}
+.admin-label{font-size:16px;color:#888;min-width:110px;}
 </style>
 </head>
 <body>
@@ -79,8 +84,8 @@ canvas#roulette-canvas{border-radius:50%;box-shadow:0 8px 36px rgba(0,0,0,0.28);
 <div class="screen active" id="screen-main">
   <div class="card">
     <button class="btn-admin" onclick="showAdmin()">⚙️ 관리자</button>
-    <p style="font-size:24px;font-weight:700;color:#111;text-align:center;margin-top:1.75rem;margin-bottom:.4rem;">즉석 행운 추첨</p>
-    <p style="font-size:15px;color:#888;text-align:center;margin-bottom:1.5rem;">참여 조건 확인 후 추첨 버튼을 눌러주세요</p>
+    <p style="font-size:36px;font-weight:700;color:#111;text-align:center;margin-top:1.75rem;margin-bottom:.6rem;">즉석 행운 추첨</p>
+    <p style="font-size:18px;color:#888;text-align:center;margin-bottom:2rem;">참여 조건 확인 후 추첨 버튼을 눌러주세요</p>
     <div class="stats-row">
       <div class="stat"><div class="stat-label">오늘 참여</div><div class="stat-val" id="today-count">0</div></div>
       <div class="stat"><div class="stat-label">남은 자리</div><div class="stat-val" id="today-remain">413</div></div>
@@ -95,12 +100,12 @@ canvas#roulette-canvas{border-radius:50%;box-shadow:0 8px 36px rgba(0,0,0,0.28);
 <div class="screen" id="screen-draw">
   <div class="card">
     <button class="btn-admin" onclick="cancelDraw()">← 취소</button>
-    <p style="font-size:20px;font-weight:700;color:#111;text-align:center;margin-top:1.75rem;margin-bottom:.25rem;" id="draw-title">버튼을 꾹 누르고 놓으세요!</p>
+    <p style="font-size:28px;font-weight:700;color:#111;text-align:center;margin-top:1.5rem;margin-bottom:2rem;" id="draw-title">버튼을 꾹 누르고 놓으세요!</p>
     <div class="draw-layout">
       <!-- 룰렛 -->
       <div class="roulette-wrap">
         <div class="roulette-needle">▼</div>
-        <canvas id="roulette-canvas" width="400" height="400"></canvas>
+        <canvas id="roulette-canvas" width="580" height="580"></canvas>
       </div>
       <!-- 충전 버튼 -->
       <div class="charge-side">
@@ -123,7 +128,7 @@ canvas#roulette-canvas{border-radius:50%;box-shadow:0 8px 36px rgba(0,0,0,0.28);
 <div class="screen" id="screen-result">
   <div class="card" id="result-card">
     <canvas id="confetti-canvas"></canvas>
-    <p style="font-size:22px;font-weight:700;color:#111;text-align:center;margin-bottom:.25rem;">추첨 결과 🎉</p>
+    <p style="font-size:32px;font-weight:700;color:#111;text-align:center;margin-bottom:.5rem;">추첨 결과 🎉</p>
     <div class="result-center">
       <div class="result-face-wrap">
         <div class="spin-deco"></div>
@@ -233,13 +238,13 @@ function assignChar(prizes){
 /* ================================================================
    룰렛 그리기
 ================================================================ */
-var CX=200, CY=200, R=195;
+var CX=290, CY=290, R=282;
 var rouletteAngle=0;
 
 function drawRoulette(offset){
   var canvas=document.getElementById('roulette-canvas');
   var ctx=canvas.getContext('2d');
-  ctx.clearRect(0,0,400,400);
+  ctx.clearRect(0,0,580,580);
 
   for(var i=0;i<slices.length;i++){
     var sl=slices[i], c=CHARS[sl.charIdx];
@@ -254,11 +259,11 @@ function drawRoulette(offset){
     var sl=slices[i], c=CHARS[sl.charIdx];
     var arc=sl.end-sl.start;
     var mid=sl.mid+offset;
-    var dist=R*0.65;
+    var dist=R*0.66;
     ctx.save();
     ctx.translate(CX+dist*Math.cos(mid), CY+dist*Math.sin(mid));
     ctx.rotate(mid+Math.PI/2);
-    var imgSize = arc > 1.2 ? 54 : arc > 0.9 ? 48 : arc > 0.6 ? 42 : 36;
+    var imgSize = arc > 1.2 ? 80 : arc > 0.9 ? 70 : arc > 0.6 ? 60 : 52;
     // 이미지 그리기
     var imgObj=CHAR_IMAGES[sl.charIdx];
     if(imgObj && imgObj.complete && imgObj.naturalWidth>0){
@@ -270,7 +275,7 @@ function drawRoulette(offset){
       ctx.textAlign='center';ctx.textBaseline='middle';
       ctx.fillText(c.name,0,0);
     }
-    var nameSize = arc > 1.2 ? 12 : arc > 0.9 ? 11 : arc > 0.6 ? 10 : 9;
+    var nameSize = arc > 1.2 ? 20 : arc > 0.9 ? 18 : arc > 0.6 ? 16 : 15;
     ctx.font='bold '+nameSize+'px sans-serif';
     ctx.fillStyle='#fff';
     ctx.shadowColor='rgba(0,0,0,0.6)';ctx.shadowBlur=3;
@@ -280,12 +285,12 @@ function drawRoulette(offset){
   }
 
   // 중앙 원
-  ctx.beginPath();ctx.arc(CX,CY,26,0,Math.PI*2);
+  ctx.beginPath();ctx.arc(CX,CY,36,0,Math.PI*2);
   ctx.fillStyle='#fff';ctx.fill();
   ctx.strokeStyle='#ddd';ctx.lineWidth=2;ctx.stroke();
-  ctx.font='bold 11px sans-serif';ctx.fillStyle='#555';
+  ctx.font='bold 15px sans-serif';ctx.fillStyle='#FF5FA0';
   ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillStyle='#FF5FA0';ctx.fillText('GO!',CX,CY);
+  ctx.fillStyle='#FF5FA0';ctx.fillStyle='#FF5FA0';ctx.fillText('GO!',CX,CY);
 }
 
 /* ── 바늘 위치(12시=-π/2)의 캐릭터 반환 ── */
@@ -467,7 +472,7 @@ function stopConfetti(){
 function showResult(w){
   stopConfetti();
   var rf=document.getElementById('result-face');
-  rf.innerHTML='<img src="'+w.img+'" style="width:120px;height:120px;object-fit:contain;" />';
+  rf.innerHTML='<img src="'+w.img+'" style="width:180px;height:180px;object-fit:contain;" />';
   rf.style.background=w.bg;
   document.getElementById('result-grade').textContent=w.prize+' '+w.name+'상';
   document.getElementById('result-grade').className='prize-grade '+w.cls;
